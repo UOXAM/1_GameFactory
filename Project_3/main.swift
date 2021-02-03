@@ -9,7 +9,7 @@ import Foundation
 
 ///
 ///
-/// PROPOSER DE LANCER UNE PARTIE  
+/// PROPOSER DE LANCER UNE PARTIE  !
 ///
 ///
 

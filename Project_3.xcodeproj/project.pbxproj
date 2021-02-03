@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C375350B25C59715005294A5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375350A25C59715005294A5 /* main.swift */; };
+		C375351325C59831005294A5 /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375351225C59831005294A5 /* Weapon.swift */; };
+		C375351625C59874005294A5 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375351525C59874005294A5 /* Character.swift */; };
+		C375351925C59894005294A5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375351825C59894005294A5 /* Player.swift */; };
+		C375351C25C598C0005294A5 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375351B25C598C0005294A5 /* Game.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		C375350725C59715005294A5 /* Project_3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project_3; sourceTree = BUILT_PRODUCTS_DIR; };
 		C375350A25C59715005294A5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		C375351225C59831005294A5 /* Weapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
+		C375351525C59874005294A5 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		C375351825C59894005294A5 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		C375351B25C598C0005294A5 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				C375350A25C59715005294A5 /* main.swift */,
+				C375351225C59831005294A5 /* Weapon.swift */,
+				C375351525C59874005294A5 /* Character.swift */,
+				C375351825C59894005294A5 /* Player.swift */,
+				C375351B25C598C0005294A5 /* Game.swift */,
 			);
 			path = Project_3;
 			sourceTree = "<group>";
@@ -119,7 +131,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C375351925C59894005294A5 /* Player.swift in Sources */,
+				C375351C25C598C0005294A5 /* Game.swift in Sources */,
+				C375351625C59874005294A5 /* Character.swift in Sources */,
 				C375350B25C59715005294A5 /* main.swift in Sources */,
+				C375351325C59831005294A5 /* Weapon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

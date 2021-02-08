@@ -26,10 +26,12 @@ class Character{
         self.heal = heal
     }
     
+    // DONNER LES INFORMATIONS PRINCIPALES D'UN PERSONNAGE
     func present(){
         print("Nom : \(name) \(activity) Vie : \(actualHealth)/\(health) Arme : \(weapon) Capacité de soin : \(heal)")
     }
     
+    // ATTAQUER UN ENNEMI
     func attack(enemy: Character){
         print("\(name) attaque avec \(weapon) et inflige \(weapon.damages) points de dégâts !")
         enemy.actualHealth -= self.weapon.damages
@@ -37,15 +39,16 @@ class Character{
             enemy.actualHealth = 0
             print("\(enemy.name) est vaincu et rejoint les enfers !")
         }else if enemy.actualHealth == 1{
-            print("\(enemy.name) tiens le choc avec un dernier point de vie.")
+            print("\(enemy.name) tient le choc avec un dernier point de vie.")
         }else{
-            print("\(enemy.name) tiens le choc avec encore \(enemy.actualHealth) points de vie.")
+            print("\(enemy.name) tient le choc avec encore \(enemy.actualHealth) points de vie.")
         }
     nbAttack += 1
 //        enemy.actualHealth = max(0, enemy.actualHealth -= self.weapon.damages)
 
     }
 
+    // SOIGNER UN MEMBRE DE MON 2QUIPE
     func heal(teamMate: Character){
         print("\(name) apporte des soins à \(teamMate.name) !")
         teamMate.actualHealth += self.heal

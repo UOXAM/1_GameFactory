@@ -6,32 +6,37 @@
 //
 
 import Foundation
-
+    
+// CLASSE PERSONNAGE
 class Character{
+        
+        var activity: String
+        var name:String = ""
+        var weapon = Weapon()
+        var health: Int
+        var actualHealth: Int
+        var heal: Int
+        var nbAttack = 0
+        var nbHeal = 0
+        
+        init() {
+            self.activity = "Monsieur tout le monde"
+            self.health = 100
+            self.actualHealth = health
+            self.heal = 25
+        }
+
     
-    let activity: String
-    var name:String = ""
-    var weapon: Weapon
-    let health: Int
-    var actualHealth:Int
-    let heal: Int
-    var nbAttack = 0
-    var nbHeal = 0
-    
-    init(activity: String, health: Int, weapon: Weapon, heal: Int) {
-        self.activity = activity
-        self.health = health
-        self.weapon = weapon
-        self.actualHealth = health
-        self.heal = heal
-    }
-    
-    // DONNER LES INFORMATIONS PRINCIPALES D'UN PERSONNAGE
+// AFFICHER LES INFORMATIONS PRINCIPALES D'UN PERSONNAGE ***
     func present(){
-        print("Nom : \(name) \(activity) Vie : \(actualHealth)/\(health) Arme : \(weapon) Capacité de soin : \(heal)")
+        if name == ""{
+            print("\(activity) -> Life : \(actualHealth)/\(health) - Weapon : \(weapon.name)(\(weapon.damages)) - Heal :\(heal)")
+        }else{
+            print("\(name), \(activity) -> Life : \(actualHealth)/\(health) - Weapon : \(weapon.name)(\(weapon.damages)) - Heal :\(heal)")
+        }
     }
     
-    // ATTAQUER UN ENNEMI
+// ATTAQUER UN ENNEMI ***
     func attack(enemy: Character){
         print("\(name) attaque avec \(weapon) et inflige \(weapon.damages) points de dégâts !")
         enemy.actualHealth -= self.weapon.damages
@@ -48,7 +53,7 @@ class Character{
 
     }
 
-    // SOIGNER UN MEMBRE DE MON 2QUIPE
+// SOIGNER UN MEMBRE DE MON EQUIPE ***
     func heal(teamMate: Character){
         print("\(name) apporte des soins à \(teamMate.name) !")
         teamMate.actualHealth += self.heal
@@ -59,15 +64,7 @@ class Character{
             print("\(teamMate.name) reprend des forces. Ses points de vie s'élèvent à présent à \(teamMate.actualHealth) / \(teamMate.health).")
         }
     nbHeal += 1
-
-
+    }
+}
         
 //        teamMate.actualHealth = min(teamMate.health, teamMate.actualHealth += self.heal)
-
-    }
-    
-    func openChest(){
-        
-    }
-    
-}

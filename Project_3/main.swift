@@ -12,28 +12,9 @@ import Foundation
 /// PROPOSER DE LANCER UNE PARTIE  !
 ///
 ///
+///
 
-var playGame: Bool = false
-func askToPlay(){
-    print("Voulez-vous jouer ? oui ou non ?")
 
-    // Tant que la réponse n'est pas "oui", reproposer de jouer
-    while playGame == false {
-        if let responseToPlay = readLine(){
-    
-    // Si la réponse est oui, lancer une partie
-            if responseToPlay == "oui"{
-                playGame = true
-                play()
-            }else if responseToPlay == "non"{
-                print("Dommage... Vous êtes sûr... Voulez-vous jouer ? oui ou non ?")
-            
-            }else{
-                print("Je ne comprends pas votre réponse")
-            }
-        }
-    }
-}
 
 ///
 ///
@@ -41,64 +22,72 @@ func askToPlay(){
 ///
 ///
 
-func play(){
-    print("C'est partit !")
+// DEMARRER UNE SESSION
+//var newSession: Bool = true
+var nbGames: Int = 0
+
+var game = Game()
+
+// UNE SESSION PEUT CONTENIR PLUSIEURS PARTIES
+//while nbGames >= 0 {
+    
+    // Initialiser le jeu si c'est une nouvelle session
+//    if nbGames == 0{
+//        game = Game()
+//    }
         
-    // Initialiser le jeu :
-    let game = Game()
+    // DEMARRER UNE PARTIE
+    // Demander de jouer :
+game.askToPlay()
+        
+    // Définir le personnage qui jouera en premier
     var activePlayer = game.playerOne
     var passivePlayer = game.playerTwo
 
-    //  Renseigner le nom des joueurs
-    game.namePlayers()
-
+    // Si les mêmes joueurs rejouent ils gardent les mêmes noms de joueurs
+    if nbGames == 0 {
+        // Renseigner le nom des joueurs
+        game.namePlayer(activePlayer)
+        game.namePlayer(passivePlayer)
+    }
+        
     //  Créer les équipes et nommer ses personnages
     game.createTeam(activePlayer)
     game.createTeam(passivePlayer)
-
+        
     //  Démarrer le jeu : Jouer à tour de rôle tant qu'au moins un personnage de chaque équipe est vivant
     while activePlayer.teamActualHealth > 0 && passivePlayer.teamActualHealth > 0 {
-            
+                   
         //  Le Joueur choisit le personnage actif
-        game.selectCharacterOfMyTeam(activePlayer)
-            
-        //  Proposer le coffre d'armes ?
-        game.showChest()
-            
-        //   Si oui :
-        if game.proposeChest == true{
+        let activeCharacter = game.selectCharacter(activePlayer)
+                   
+        //  Le jeu propose aléatoirement le coffre d'armes au personnage
+        let proposeChest = game.showChest()
+                   
+        //  Si le coffre lui est proposé, il peut choisir de l'ouvrir :
+        if proposeChest == true{
             print("Un coffre contenant une armé aléatoire vous est proposé. Si vous l'ouvrez votre personnage devra prendre cette nouvelle arme.")
             print("Voulez vous ouvrir ce coffre ? oui ou non ?")
 
-            //   Le Joueur décide d'ouvrir le coffre ?
+            //   La réponse du joueur est collectée
             if let responseToOpenChest = readLine(){
-                    
-                //   Si oui : son personnage change d'arme
-                if responseToOpenChest == "oui"{
-                    game.randomWeapon()
-                    if game.newWeapon.damages >= game.activeCharacter.weapon.damages{
-                        print("Bonne pioche !")
-                    }else{
-                        print("Dommage !")
-                    }
-                    print("La nouvelle arme de \(game.activeCharacter.name) est \(game.newWeapon.name) avec \(game.newWeapon.damages) points de dégât.")
-                    game.activeCharacter.weapon = game.newWeapon
-                        
-                //  Si non : on continue le jeu
+                           
+                //   Si sa réponse est "oui", une arme aléatoire apparaît et le personnage change d'arme
+                if responseToOpenChest.uppercased() == "OUI" || responseToOpenChest.uppercased() == "YES"{
+                        let newWeapon = game.randomWeapon()
+                        game.changeWeapon(of: activeCharacter, by: newWeapon)
+                //  Si sa réponse est non : le personnage garde son arme actuelle et continue le jeu
                 }else{
                     print("Ok, une prochaine fois peut être. Continuons le jeu.")
                 }
             }
         }
-
-        //  Choisir l'action ainsi que le personnage récepteur
-        activePlayer.chooseAction()
             
-        //  Recalculer la vie cumulée de chaque équipe
-        activePlayer.calculateTeamStats()
-        passivePlayer.calculateTeamStats()
+        //  Le joueur choisit quelle action il fait exécuter à son personnage (soin pour un coéquipier ou attaque d'un ennemi)
+        game.executeAction(of: activeCharacter, from: activePlayer, to: passivePlayer)
             
-        // Si l'adversaire a encore des personnages vivants : c'est à son tour de jouer
+            
+        // Si l'adversaire a encore au moins un personnage vivant dans sa team, il devient l'activePlayer et c'est à son tour de jouer (nouvelle boucle du while)
         if passivePlayer.teamActualHealth > 0{
             activePlayer = passivePlayer
             if activePlayer.name == game.playerOne.name {
@@ -108,42 +97,18 @@ func play(){
             }
         }
     }
-
-    // Si l'adversaire a perdu (tous ses personnages sont morts) : on arrête la partie et on montre les stats
-    game.showStats()
-
-}
-
-///
-///
-/// PROPOSER DE REJOUER UNE PARTIE
-///
-///
-
-print("Voulez vous rejouer en gardant les mêmes noms de joueurs ? oui ou non ?")
-if let responseToPlayAgain = readLine(){
+        
+    // La partie est terminée, on déterminer le gagnant et le perdant
+    let winner = game.determineWinner()
+    let looser = game.determineLooser()
     
-    // Avec les mêmes noms de Joueurs
-    if responseToPlayAgain == "oui"{
-        playGame = true
-        play()
-    
-    // En recommençant depuis le début
-    }else{
-        askToPlay()
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // On ajoute une partie de gagnée au palmares du joueur vainqueur
+    winner.nbVictory += 1
+        
+    // Les stats de la partie sont affichés
+    game.showStats(winner, looser)
+        
+    // Il est proposé aux joueurs de faire une nouvelle partie en gardant les mêmes noms de joueurs. Ensuite la boucle newGame est relancée et en fonction de la réponse, il sera poroposé de nommer les joueurs (dans ce cas le nombre de parties jouées repasse a 0) ou non (dans ce cas le nombre de parties jouées s'incrément de 1).
+    game.askToKeepPlayerName()
+//}
+//}

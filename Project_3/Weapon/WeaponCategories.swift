@@ -7,7 +7,7 @@
 
 import Foundation
 
-// CLASSES D'ARMES AYANT HERITEES DE LA CLASSE MERE WEAPON
+// CLASSES D'ARMES AYANT HERITÉES DE LA CLASSE MÈRE WEAPON
 
 class FireWeapon : Weapon {
     init(name: String) {

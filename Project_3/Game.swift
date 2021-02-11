@@ -11,116 +11,98 @@ class Game{
     var weaponsList: [Weapon] = []
     var charactersList: [Character] = []
     var charactersListToChoose: [Character] = []
-    var playerOne = Player(name: "1")
-    var playerTwo = Player(name: "2")
-    var playGame: Bool = false
-    var proposeChest: Bool = false
-    var newWeapon: Weapon
-    
-    
-    //  Création des différentes armes et personnages
-    init(){
-        let knife = Weapon(name: "un scalpel", damages: 25)
-        weaponsList.append(knife)
-        let sword = Weapon(name: "une épée", damages: 35)
-        weaponsList.append(sword)
-        let magicSword = Weapon(name: "l'épée Escalibur", damages: 70)
-        weaponsList.append(magicSword)
-        let baseballBat = Weapon(name: "une batte de Baseball", damages: 25)
-        weaponsList.append(baseballBat)
-        let bottle = Weapon(name: "une bouteille en verre", damages: 20)
-        weaponsList.append(bottle)
-        let fire = Weapon(name: "un lance-flammes", damages: 50)
-        weaponsList.append(fire)
-        let wood = Weapon(name: "un bâton", damages: 20)
-        weaponsList.append(wood)
-        let butter = Weapon(name: "un couteau à beurre", damages: 5)
-        weaponsList.append(butter)
-        let shuriken = Weapon(name: "un shuriken", damages: 15)
-        weaponsList.append(shuriken)
-        let flowers = Weapon(name: "un bouquet de fleurs", damages: 0)
-        weaponsList.append(flowers)
-        let flashball = Weapon(name: "un flashball", damages: 30)
-        weaponsList.append(flashball)
-        let bow = Weapon(name: "un arc", damages: 40)
-        weaponsList.append(bow)
-        let gun = Weapon(name: "un pistolet", damages: 50)
-        weaponsList.append(gun)
-        let magicWand = Weapon(name: "une baguette magique", damages: 55)
-        weaponsList.append(gun)
-        
-        let policeMan = Character(activity: "le Policier", health: 150, weapon: flashball, heal: 25)
-        charactersList.append(policeMan)
-        let doctor = Character(activity: "le Docteur", health: 100, weapon: knife, heal: 60)
-        charactersList.append(doctor)
-        let military = Character(activity: "le militaire", health: 170, weapon: gun, heal: 20)
-        charactersList.append(military)
-        let ninja = Character(activity: "la ninja", health: 130, weapon: shuriken, heal: 30)
-        charactersList.append(ninja)
-        let punk = Character(activity: "le punk", health: 120, weapon: bottle, heal: 20)
-        charactersList.append(punk)
-        let scientist = Character(activity: "la scientifique", health: 100, weapon: fire, heal: 35)
-        charactersList.append(scientist)
-        let athletic = Character(activity: "le sportif", health: 150, weapon: baseballBat, heal: 20)
-        charactersList.append(athletic)
-        let swat = Character(activity: "le GIGN", health: 150, weapon: gun, heal: 30)
-        charactersList.append(swat)
-        let horseman = Character(activity: "le chevalier", health: 170, weapon: sword, heal: 10)
-        charactersList.append(horseman)
-        let witch = Character(activity: "la sorcière", health: 90, weapon: magicWand, heal: 55)
-        charactersList.append(witch)
-        self.newWeapon = knife
-    }
-    
-    
-    //  Donner un nom pour chacun des deux joueurs
-    func namePlayers(){
-        print("Joueur 1 : veillez saisir votre nom")
-        if let namePlayerOne = readLine(){
-            playerOne.name = namePlayerOne
-            print("Joueur 2 : veillez saisir votre nom")
-        }
-        
-        if let namePlayerTwo = readLine(){
-            playerTwo.name = namePlayerTwo
+    var playerOne = Player(name: "Joueur 1")
+    var playerTwo = Player(name: "Joueur 2")
+
+//  NOMMER UN JOUEUR ***
+    func namePlayer(_ player: Player) {
+        while player.name == "Joueur 1" || player.name == "Joueur 2" || playerOne.name == playerTwo.name {
+            print("\(player.name): veillez saisir votre nom")
+            if let name = readLine(){
+                player.name = name
+                if playerOne.name == playerTwo.name{
+                    print("Ce nom est déjà pris par l'autre joueur.")
+                }
+            }
         }
     }
     
-    // Créer son équipe de 3 personnages
+    
+//  PROPOSER DE JOUER UNE PARTIE ***
+    func askToPlay(){
+        var playGame = false
+        while playGame == false {
+            print("Prêt pour jouer ? Oui ou non ?")
+            if let response = readLine(){
+                if response.uppercased() == "OUI" || response.uppercased() == "YES"{
+                    playGame = true
+                }else if response.uppercased() == "NON" || response.uppercased() == "NO"{
+                    print("Dommage... Vous êtes sûr... Voulez-vous jouer ? oui ou non ?")
+                }else{
+                    print("Je ne comprends pas votre réponse")
+                }
+            }
+        }
+        print("Parfait, commençons la partie !")
+    }
+    
+    
+// CREER LA LISTE DES ARMES ET PERSONNAGES DU JEU ***
+    func initializeCharactersAndWeapons(){
+        weaponsList = []
+        let knife = StreetWeapon(name: "un couteau") ; weaponsList.append(knife)
+        let baseballBat = StreetWeapon(name: "une batte de Baseball") ; weaponsList.append(baseballBat)
+        let bottle = StreetWeapon(name: "une bouteille en verre") ; weaponsList.append(bottle)
+        let katana = NinjaWeapon(name: "un katana") ; weaponsList.append(katana)
+        let shuriken = NinjaWeapon(name: "des shurikens") ; weaponsList.append(shuriken)
+        let nunjaku = NinjaWeapon(name: "un nunjaku)") ; weaponsList.append(nunjaku)
+        let magicSword = ExtremWeapon(name: "l'épée Escalibur") ; weaponsList.append(magicSword)
+        let flameThrower = ExtremWeapon(name: "un lance-flammes") ; weaponsList.append(flameThrower)
+        let magicWand = ExtremWeapon(name: "une baguette magique") ; weaponsList.append(magicWand)
+        let butter = LolWeapon(name: "un couteau à beurre") ; weaponsList.append(butter)
+        let flowers = LolWeapon(name: "un bouquet de fleurs") ; weaponsList.append(flowers)
+        let tomatoes = LolWeapon(name: "des tomates") ; weaponsList.append(tomatoes)
+        let bow = MedievalWeapon(name: "un arc") ; weaponsList.append(bow)
+        let sword = MedievalWeapon(name: "un glaive") ; weaponsList.append(sword)
+        let slingShot = MedievalWeapon(name: "une fronde") ; weaponsList.append(slingShot)
+        let gun = FireWeapon(name: "un pistolet") ; weaponsList.append(gun)
+        let revolver = FireWeapon(name: "un revolver") ; weaponsList.append(revolver)
+        let rifle = FireWeapon(name: "un fusil") ; weaponsList.append(rifle)
+
+        charactersList = []
+        let policeMan = LawEnforcement(activity: "Policeman", weapon: gun) ; charactersList.append(policeMan)
+        let military = LawEnforcement(activity: "Military", weapon: rifle) ; charactersList.append(military)
+        let doctor = MedicalStaff(activity: "Doctor", weapon: bottle) ; charactersList.append(doctor)
+        let nurse = MedicalStaff(activity: "Nurse", weapon: knife) ; charactersList.append(nurse)
+        let ninja = AsianWarrior(activity: "Ninja", weapon: katana) ; charactersList.append(ninja)
+        let samurai = AsianWarrior(activity: "Samurai", weapon: shuriken) ; charactersList.append(samurai)
+        let knight = MedievalWarrior(activity: "Knight", weapon: sword) ; charactersList.append(knight)
+        let warrior = MedievalWarrior(activity: "warrior", weapon: slingShot) ; charactersList.append(warrior)
+        let boxer = Athlete(activity: "Boxer", weapon: knife) ; charactersList.append(boxer)
+        let wrestler = Athlete(activity: "Wrestler", weapon: baseballBat) ; charactersList.append(wrestler)
+    }
+    
+// CREER SA TEAM DE 3 PERSONNAGES ***
     func createTeam(_ player: Player){
         player.team = []
+        initializeCharactersAndWeapons()
         charactersListToChoose = charactersList
         
-        // Proposer d'ajouter un personnage tant qu'on en a pas 3
-        while player.team.count != 3{
+        // Proposer d'ajouter un personnage tant qu'on n'en a pas 3
+        while player.team.count < 3{
             
             // Afficher la liste des personnages disponibles
-            showCharacters(list: charactersListToChoose)
-            print("\(player.name) : choisissez le personnage \(player.team.count + 1) / 3 pour votre équipe en tapant son numéro.")
+            showAliveCharacters(list: charactersListToChoose)
+            print("\(player.name) : choisissez le personnage \((player.team.count) + 1) / 3 pour votre équipe en tapant son numéro.")
             
             //  Entrer le numéro du personnage choisi
             if let choice = readLine(){
                 let choiceMember = Int(choice)!
                 switch choiceMember {
                 case 0..<charactersListToChoose.count :
-                    
-                    //  Lui donner un nom unique
-                    func nameCharacter(){
-                        print("Veuillez lui donner un nom.")
-                        if let name = readLine(){
-                            for member in player.team {
-                                if name == member.name{
-                                    print("Veuillez lui donner un nom différent des autres membres de votre équipe.")
-                                    nameCharacter()
-                                }else{
-                                    charactersListToChoose[choiceMember].name = name
-                                    player.team.append(charactersListToChoose[choiceMember])
-                                    print("Vous venez d'ajouter \(charactersListToChoose[choiceMember].name) à votre équipe.")
-                                    charactersListToChoose.remove(at: choiceMember)
-                                }
-                            }
-                        }
-                    }
+                    player.team.append(charactersListToChoose[choiceMember])
+                    nameCharacter(character: player.team.last!, player: player)
+                    charactersListToChoose.remove(at: choiceMember)
                 case  charactersListToChoose.count... :
                     print("Je ne reconnais pas ce personnage.")
                 default :
@@ -128,21 +110,41 @@ class Game{
                 }
             }
         }
-        
-        
-        
-        
         //  Afficher l'équipe au complet
+        print("Your TEAM :")
         showCharacters(list: player.team)
-        
+                
         //  calculer les stats de l'équipe
         player.calculateTeamStats()
     }
+
+//  DONNER UN NOM UNIQUE AU PERSONNAGE ***
+    func nameCharacter(character: Character, player: Player){
+        var nameOk = false
+        while nameOk == false {
+            print("Veuillez lui donner un nom.")
+            if let name = readLine(){
+                nameOk = true
+                for member in player.team {
+                    if name == member.name {
+                        nameOk = false
+                    }
+                }
+                if nameOk == false {
+                    print("Ce nom est déjà pris.")
+                }else{
+                    player.team.last!.name = name
+                    print("You just add \(name) \(player.team.last!.activity) to your team.")
+                }
+            }
+        }
+    }
     
-    //  Montrer le coffre (1 chance sur 4 qu'il apparaisse)
+//  FAIRE APPARAITRE LE COFFRE ? (1 chance sur 3) ***
     func showChest() -> Bool{
-        let x = Int.random(in: 0..<4)
-        if x != 1{
+        var proposeChest: Bool = false
+        let x = Int.random(in: 0..<3)
+        if x == 1{
             proposeChest = true
         }else{
             proposeChest = false
@@ -150,35 +152,64 @@ class Game{
         return proposeChest
     }
     
-    //  Proposer une arme au hasard
+//  PROPOSER UNE ARME AU HASARD ***
     func randomWeapon() -> Weapon{
-        let x = Int.random(in: 0..<4)
-        newWeapon = weaponsList[x]
+        let x = Int.random(in: 0..<weaponsList.count)
+        let newWeapon = weaponsList[x]
         return newWeapon
     }
+
+// CHANGER L'ARME DU PERSONNAGE ***
+    func changeWeapon(of activeCharacter: Character, by newWeapon: Weapon){
+        if newWeapon.damages >= activeCharacter.weapon.damages{
+            print("Bonne pioche ! Vous échangez \(activeCharacter.weapon.name) pour \(newWeapon.name), qui inflige \((newWeapon.damages)-(activeCharacter.weapon.damages)) points de dégâts supplémentaires.")
+        }else if newWeapon.name == activeCharacter.weapon.name {
+            print("Kif kif ! Vous reprenez la même arme : \(activeCharacter.weapon.name).")
+        }else if newWeapon.damages == activeCharacter.weapon.damages {
+            print("Kif kif ! Vous échangez \(activeCharacter.weapon.name) pour \(newWeapon.name) qui inflige les mêmes dégâts.")
+        }else{
+            print("Oups Vous perdez au change ! Vous échangez \(activeCharacter.weapon.name) pour \(newWeapon.name), qui inflige \((activeCharacter.weapon.damages)-(newWeapon.damages)) points de dégâts de moins.")
+        }
+        activeCharacter.weapon = newWeapon
+    }
     
-    //  Afficher les stats de la partie
-    func showStats() {
-        var winner: Player
-        var looser: Player
-        
+//  CALCULER LES STATS ***
+    func determineWinner() -> Player{
         playerOne.calculateTeamStats()
         playerTwo.calculateTeamStats()
-
-        if playerOne.teamActualHealth > playerTwo.teamActualHealth {
+        
+        var winner = playerOne
+        
+        if playerOne.teamActualHealth < playerTwo.teamActualHealth {
+            winner = playerTwo
+        }else{
             winner = playerOne
+        }
+        return winner
+    }
+    
+    func determineLooser() -> Player{
+        playerOne.calculateTeamStats()
+        playerTwo.calculateTeamStats()
+        
+        var looser = playerOne
+        
+        if playerOne.teamActualHealth < playerTwo.teamActualHealth {
             looser = playerTwo
         }else{
-            winner = playerTwo
             looser = playerOne
         }
-        winner.nbVictory += 1
+        return looser
+    }
+
+//  AFFICHER LES STATS DE LA PARTIE ***
+    func showStats(_ winner: Player, _ looser: Player){
         print("Le vainqueur est \(winner.name) !")
         print("Points de vie de l'équipe : \(winner.teamActualHealth) / \(winner.teamInitialHealth)")
         print("Nombres d'attaques portées : \(winner.teamNbAttack)")
         print("Nombres de soins donnés : \(winner.teamNbHeal)")
         print("\(winner.team)")
-   
+
         print("\(looser.name) s'est fait terrassé !")
         print("Points de vie de l'équipe : \(looser.teamActualHealth) / \(looser.teamInitialHealth)")
         print("Nombres d'attaques portées : \(looser.teamNbAttack)")
@@ -189,61 +220,103 @@ class Game{
         print("Nombre de parties gagnées par \(looser.name) : \(looser.nbVictory)")
     }
     
-    //  Afficher les personnages d'une liste
+//  AFFICHER TOUS LES PERSONNAGES D'UNE LISTE ***
     func showCharacters(list: [Character]){
         for character in list{
-            print("Personnage n°\(list.firstIndex{$0 === character})")
+            print("\(character.name), \(character.activity)")
+        }
+    }
+    
+//  AFFICHER TOUS LES PERSONNAGES VIVANTS D'UNE LISTE ***
+    func showAliveCharacters(list: [Character]){
+        print("Équipe :")
+        for character in list where character.actualHealth > 0{
+            print("N°\(list.firstIndex{$0 === character}!)")
             character.present()
         }
     }
     
-    //  Afficher les personnages vivants d'une liste
-    func showAliveCharacters(list: [Character]){
-        for character in list where character.actualHealth > 0{
-            print("Personnage n°\(list.firstIndex{$0 === character})")
-            character.present()
-        }
-    }
-                
-    //  Proposer de jouer une partie
-    func askToPlay(){
-        while playGame == false {
-
-            if let response = readLine(){
-                if response == "oui"{
-                    playGame = true
-                }else if response == "non"{
-                    print("Dommage... Vous êtes sûr... Voulez-vous jouer ? oui ou non ?")
-                    
+// SELECTIONNER UN PERSONNAGE ***
+    func selectCharacter(_ player: Player) -> Character{
+        var choiceMember = -1
+        let range = 0...player.team.count
+        
+        //  Choisir le personnage qui va réaliser l'action
+        while !range.contains(choiceMember) || player.team[choiceMember].actualHealth <= 0{
+            
+            //  Afficher les personnages vivants de la team []
+            showAliveCharacters(list: player.team)
+            
+            print("Choisissez un des personnages ci-dessus en tapant son numéro.")
+            if let choice = readLine(){
+                if Int(choice) == nil{
+                    print("Je ne comprends pas.")
                 }else{
-                    print("Je ne comprends pas votre réponse")
+                    choiceMember = Int(choice)!
+                    if !range.contains(choiceMember){
+                        print("Je ne comprends pas.")
+                    }else if range.contains(choiceMember) && player.team[choiceMember].actualHealth <= 0{
+                        print("Ce personnage \(player.team[choiceMember].name) est mort. Il faut choisir quelqu'un d'autre.")
+                    }
                 }
             }
         }
+        print("Vous avez choisi \(player.team[choiceMember].name).")
+        return player.team[choiceMember]
     }
     
-    var activeCharacter: Character
-
-    
-    // Sélectionner le personnage qui va exécuter une action
-    func selectCharacterOfMyTeam(_ player: Player) -> Character{
-        
-        //  Afficher les personnages vivants de ma team []
-        showAliveCharacters(list: player.team)
-        
-        var choiceMember = -1
-        
-        //  Choisir le personnage qui va réaliser l'action
-        while choiceMember < 0 || choiceMember >= player.team.count || player.team[choiceMember].actualHealth <= 0{
-            print("\(player.name) : choisissez le membre de votre équipe qui va réaliser l'action, en tapant son numéro.")
+// CHOISIR L'ACTION A REALISER (ATTAQUE OU SOIN) ***
+    func chooseAction(of activeCharacter: Character) -> Int{
+        var choiceAction = 0
+        while choiceAction != 1 && choiceAction != 2 {
+            print("Que voulez vous que \(activeCharacter.name) \(activeCharacter.activity) fasse ?")
+            print("Tapez 1 : pour attaquer un adversaire")
+            print("Tapez 2 : pour soigner un coéquipier")
             if let choice = readLine(){
-                choiceMember = Int(choice)!
-            }
-            if choiceMember < 0 || choiceMember >= player.team.count || player.team[choiceMember].actualHealth <= 0{
-                print("Je ne comprends pas, veuillez réessayer.")
+                choiceAction = Int(choice)!
+            }else{
+                print("Je ne comprends pas votre choix.")
             }
         }
-        activeCharacter = player.team[choiceMember]
-        return activeCharacter
+        return choiceAction
+    }
+            
+    func executeAction(of activeCharacter: Character, from activePlayer: Player, to passivePlayer: Player){
+        let choiceAction = chooseAction(of: activeCharacter)
+        
+        if choiceAction == 1{
+            print("\(activeCharacter.name) est prêt pour attaquer.")
+            print("Qui choisissez vous d'attaquer ?")
+            showAliveCharacters(list: passivePlayer.team)
+            let enemy = selectCharacter(passivePlayer)
+            activeCharacter.attack(enemy: enemy)
+        }else if choiceAction == 2{
+            print("\(activeCharacter.name) est prêt.")
+            print("Qui choisissez vous de spoigner ?")
+            showAliveCharacters(list: activePlayer.team)
+            let member = selectCharacter(activePlayer)
+            activeCharacter.heal(teamMate: member)
+        }
+    }
+    
+    func askToKeepPlayerName(){
+        var responseToQuestion = false
+        while responseToQuestion == false {
+                print("Voulez-vous rejouer en gardant les mêmes noms de joueurs ? Oui ou Non ?")
+                if let response = readLine(){
+                    if response.uppercased() == "OUI" || response.uppercased() == "YES"{
+                        nbGames += 1
+                        responseToQuestion = true
+                        
+                    }else if response.uppercased() == "NON" || response.uppercased() == "NO"{
+                        nbGames = 0
+                        responseToQuestion = true
+                    }else{
+                        print("Je ne comprends pas.")
+                    }
+                }
+        }
     }
 }
+
+

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class Player{
     var name: String
     var team: [Character] = []
@@ -21,25 +20,28 @@ class Player{
         self.name = name
     }
 
+// CHOISIR L'ACTION A REALISER (ATTAQUE OU SOIN) ***
+//    func chooseAction(of activeCharacter: Character) -> Int{
+//        var choiceAction = 0
+//        while choiceAction != 1 && choiceAction != 2 {
+//            print("Que voulez vous que \(activeCharacter.name) \(activeCharacter.activity) fasse ?")
+//            print("Tapez 1 : pour attaquer un adversaire")
+//            print("Tapez 2 : pour soigner un coéquipier")
+//            if let choice = readLine(){
+//                choiceAction = Int(choice)!
+//                print("Je ne comprends pas votre choix.")
+//            }
+//        }
+//        if choiceAction == 1{
+//            print("\(activeCharacter.name) est prêt pour attaquer.")            
+//
+//        }else if choiceAction == 2{
+//            print("\(activeCharacter.name) est prêt pour soigner.")
+//        }
+//        return choiceAction
+//    }
         
-
-    
-    //
-    func chooseAction(){
-        print("Que voulez vous que votre personnage fasse ? Attaquer un adversaire ou soigner un membre de son équipe ?")
-        
-//        Si attaquer :
-//        Proposer la liste des personnages adverses vivants
-        print("Qui voulez vous attaquer ?")
-//        activeCharacter.attack(enemy: )
-        
-        
-//        Si soigner :
-//        Proposer la liste des personnages de mon équipe vivants différents de activeCharacter
-        print("Qui voulez vous soigner ?")
-//        activeCharacter.heal(teamMate: )
-    }
-    
+// CALCULER LES STATISTIQUES DE L'EQUIPE ***
     func calculateTeamStats(){
         for member in team{
             teamNbAttack += member.nbAttack

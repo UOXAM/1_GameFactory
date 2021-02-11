@@ -7,12 +7,15 @@
 
 import Foundation
 
+
+// CLASSE ARME
 class Weapon{
-    let damages: Int
-    let name: String
+    var damages: Int
+    var name: String
     
-    init(name: String, damages: Int) {
-        self.name = name
-        self.damages = damages
+    init() {
+        self.name = "à mains nues"
+        self.damages = 5
     }
 }
+

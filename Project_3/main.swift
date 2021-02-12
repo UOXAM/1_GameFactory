@@ -27,7 +27,6 @@ import Foundation
 var nbGames: Int = 0
 
 var game = Game()
-
 // UNE SESSION PEUT CONTENIR PLUSIEURS PARTIES
 //while nbGames >= 0 {
     
@@ -57,31 +56,16 @@ game.askToPlay()
         
     //  Démarrer le jeu : Jouer à tour de rôle tant qu'au moins un personnage de chaque équipe est vivant
     while activePlayer.teamActualHealth > 0 && passivePlayer.teamActualHealth > 0 {
-                   
+        
+        // Annonce du tour de jeu
+        print("\n\n*********************************\n\(activePlayer.name) turn:\nWhich member of your team will execute an action ?\n*********************************")
+        
         //  Le Joueur choisit le personnage actif
         let activeCharacter = game.selectCharacter(activePlayer)
+        
                    
-        //  Le jeu propose aléatoirement le coffre d'armes au personnage
-        let proposeChest = game.showChest()
-                   
-        //  Si le coffre lui est proposé, il peut choisir de l'ouvrir :
-        if proposeChest == true{
-            print("Un coffre contenant une armé aléatoire vous est proposé. Si vous l'ouvrez votre personnage devra prendre cette nouvelle arme.")
-            print("Voulez vous ouvrir ce coffre ? oui ou non ?")
-
-            //   La réponse du joueur est collectée
-            if let responseToOpenChest = readLine(){
-                           
-                //   Si sa réponse est "oui", une arme aléatoire apparaît et le personnage change d'arme
-                if responseToOpenChest.uppercased() == "OUI" || responseToOpenChest.uppercased() == "YES"{
-                        let newWeapon = game.randomWeapon()
-                        game.changeWeapon(of: activeCharacter, by: newWeapon)
-                //  Si sa réponse est non : le personnage garde son arme actuelle et continue le jeu
-                }else{
-                    print("Ok, une prochaine fois peut être. Continuons le jeu.")
-                }
-            }
-        }
+        //  Le jeu propose aléatoirement le coffre d'armes au personnage, contenant une arme au hasard. Si le joueur décide de l'ouvrir, le personnage changera d'arme automatiquement.
+        game.proposeChest(to: activeCharacter)
             
         //  Le joueur choisit quelle action il fait exécuter à son personnage (soin pour un coéquipier ou attaque d'un ennemi)
         game.executeAction(of: activeCharacter, from: activePlayer, to: passivePlayer)

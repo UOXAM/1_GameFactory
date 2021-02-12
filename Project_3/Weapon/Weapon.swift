@@ -14,7 +14,7 @@ class Weapon{
     var name: String
     
     init() {
-        self.name = "à mains nues"
+        self.name = "bare hands"
         self.damages = 5
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 class Character{
         
         var activity: String
-        var name:String = ""
+        var name: String = ""
         var weapon = Weapon()
         var health: Int
         var actualHealth: Int
@@ -20,8 +20,8 @@ class Character{
         var nbHeal = 0
         
         init() {
-            self.activity = "Monsieur tout le monde"
-            self.health = 100
+            self.activity = "Man on the street"
+            self.health = 70
             self.actualHealth = health
             self.heal = 25
         }
@@ -38,15 +38,15 @@ class Character{
     
 // ATTAQUER UN ENNEMI ***
     func attack(enemy: Character){
-        print("\(name) attaque avec \(weapon) et inflige \(weapon.damages) points de dégâts !")
+        print("\n\(name) attacks with \(weapon.name) and causes \(weapon.damages) points of damage !")
         enemy.actualHealth -= self.weapon.damages
         if enemy.actualHealth <= 0 {
             enemy.actualHealth = 0
-            print("\(enemy.name) est vaincu et rejoint les enfers !")
+            print("\(enemy.name) is killed and go to hell !")
         }else if enemy.actualHealth == 1{
-            print("\(enemy.name) tient le choc avec un dernier point de vie.")
+            print("\(enemy.name) stays alive with 1 point of health.")
         }else{
-            print("\(enemy.name) tient le choc avec encore \(enemy.actualHealth) points de vie.")
+            print("\(enemy.name) stays alive with \(enemy.actualHealth) points of helth.")
         }
     nbAttack += 1
 //        enemy.actualHealth = max(0, enemy.actualHealth -= self.weapon.damages)
@@ -55,13 +55,13 @@ class Character{
 
 // SOIGNER UN MEMBRE DE MON EQUIPE ***
     func heal(teamMate: Character){
-        print("\(name) apporte des soins à \(teamMate.name) !")
+        print("\n\(name) give health to \(teamMate.name) !")
         teamMate.actualHealth += self.heal
         if teamMate.actualHealth >= teamMate.health{
             teamMate.actualHealth = teamMate.health
-            print("\(teamMate.name) retrouve toute sa vie. Merci \(name) !")
+            print("\(teamMate.name) is in full health. Thanks to \(name).")
         }else{
-            print("\(teamMate.name) reprend des forces. Ses points de vie s'élèvent à présent à \(teamMate.actualHealth) / \(teamMate.health).")
+            print("\(teamMate.name) fell better with \(teamMate.actualHealth) / \(teamMate.health) points of health.")
         }
     nbHeal += 1
     }

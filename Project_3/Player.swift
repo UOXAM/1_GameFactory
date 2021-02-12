@@ -43,6 +43,11 @@ class Player{
         
 // CALCULER LES STATISTIQUES DE L'EQUIPE ***
     func calculateTeamStats(){
+        teamNbAttack = 0
+        teamNbHeal = 0
+        teamInitialHealth = 0
+        teamActualHealth = 0
+        
         for member in team{
             teamNbAttack += member.nbAttack
             teamNbHeal += member.nbHeal

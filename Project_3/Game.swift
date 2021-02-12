@@ -59,15 +59,15 @@ class Game{
         charactersListToChoose = charactersList
         
         // Proposer d'ajouter un personnage tant qu'on n'en a pas 3
-        while player.team.count < 3{
+        while player.team.count < 1{
             
             // Afficher la liste des personnages disponibles
             showAliveCharacters(list: charactersListToChoose)
-            print("\n\(player.name) : choose the character \((player.team.count) + 1) / 3 for your team by entering his number.")
+            print("\n\(player.name) create your team : choose the character \((player.team.count) + 1) / 3 by entering his number.")
             
             //  Entrer le numéro du personnage choisi
 //            if let choice = readLine(), let choiceMember = Int(choice)!{
-            if let choice = readLine(), let choiceMember = Int(choice)!{
+            if let choice = readLine(), let choiceMember = Int(choice){
                 switch choiceMember {
                 case 0..<charactersListToChoose.count :
                     player.team.append(charactersListToChoose[choiceMember])
@@ -162,10 +162,7 @@ class Game{
     
 //  CALCULER LES STATS ***
     func determineWinner() -> Player{
-        playerOne.calculateTeamStats()
-        playerTwo.calculateTeamStats()
-        
-        var winner = playerOne
+        var winner : Player
         
         if playerOne.teamActualHealth < playerTwo.teamActualHealth {
             winner = playerTwo
@@ -176,35 +173,36 @@ class Game{
     }
     
     func determineLooser() -> Player{
-        playerOne.calculateTeamStats()
-        playerTwo.calculateTeamStats()
-        
-        var looser = playerOne
+        var looser : Player
         
         if playerOne.teamActualHealth < playerTwo.teamActualHealth {
-            looser = playerTwo
-        }else{
             looser = playerOne
+        }else{
+            looser = playerTwo
         }
         return looser
     }
 
 //  AFFICHER LES STATS DE LA PARTIE ***
     func showStats(_ winner: Player, _ looser: Player){
-        print("\nThe Winner is \(winner.name) !")
+        print("\n*********************************\n")
+        print("*** The Winner is \(winner.name) ! ***")
         print("Health of the team : \(winner.teamActualHealth) / \(winner.teamInitialHealth)")
         print("Nomber of attacks : \(winner.teamNbAttack)")
         print("Nomber of heals : \(winner.teamNbHeal)")
         showCharacters(list: winner.team)
-        
-        print("/n \(looser.name) : game over !")
+        print("\n\n*********************************\n\n")
+
+        print("*** \(looser.name) : game over ! ***")
         print("Health of the team : \(looser.teamActualHealth) / \(looser.teamInitialHealth)")
         print("Nomber of attacks : \(looser.teamNbAttack)")
         print("Nomber of heals : \(looser.teamNbHeal)")
         showCharacters(list: looser.team)
+        print("\n\n*********************************\n\n")
 
-        print("\nNomber of games won by \(winner.name) : \(winner.nbVictory)")
+        print("Nomber of games won by \(winner.name) : \(winner.nbVictory)")
         print("Nomber of games won by \(looser.name) : \(looser.nbVictory)")
+        print("\n*********************************\n")
     }
     
 //  AFFICHER TOUS LES PERSONNAGES D'UNE LISTE ***
@@ -234,49 +232,59 @@ class Game{
     
 // SELECTIONNER UN PERSONNAGE ***
     func selectCharacter(_ player: Player) -> Character{
-        var choiceMember = -1
+        var valideChoice = false
         let range = 0..<player.team.count
+        var character :Character = player.team.first!
         
         //  Choisir le personnage qui va réaliser l'action
-        while !range.contains(choiceMember) || player.team[choiceMember].actualHealth <= 0{
+        while valideChoice == false{
             
             //  Afficher les personnages vivants de la team []
             showAliveCharacters(list: player.team)
             
-            print("Choose a character in the list and enter his number.")
-            if let choice = readLine(){
-                if Int(choice) == nil{
-                    print("\n!!!!!!!!!!!    I don't understand    !!!!!!!!!!!")
+            print("\nChoose a character in the list and enter his number.")
+            
+            //  Vérifier que c'est bien un entier qui a été entré
+            if let choice = readLine(), let choiceMember = Int(choice){
+                if range.contains(choiceMember) && player.team[choiceMember].actualHealth > 0{
+                    character = player.team[choiceMember]
+                    print("You choose \(character.name), \(character.activity).")
+                    valideChoice = true
+                }else if range.contains(choiceMember) && player.team[choiceMember].actualHealth <= 0{
+                    print("\n!!!!!!!!!!!    This character \(player.team[choiceMember].name) is dead. Please choose someone else    !!!!!!!!!!!")
                 }else{
-                    choiceMember = Int(choice)!
-                    if !range.contains(choiceMember){
-                        print("\n!!!!!!!!!!!    I don't understand    !!!!!!!!!!!")
-                    }else if range.contains(choiceMember) && player.team[choiceMember].actualHealth <= 0{
-                        print("\n!!!!!!!!!!!    This character \(player.team[choiceMember].name) is dead. Please choose someone else    !!!!!!!!!!!")
-                    }
+                    print("\n!!!!!!!!!!!    I don't recognize this character    !!!!!!!!!!!")
                 }
-            }
-        }
-        print("You choose \(player.team[choiceMember].name), \(player.team[choiceMember].activity).")
-        return player.team[choiceMember]
-    }
-    
-// CHOISIR L'ACTION A REALISER (ATTAQUE OU SOIN) ***
-    func chooseAction(of activeCharacter: Character) -> Int{
-        var choiceAction = 0
-        while choiceAction != 1 && choiceAction != 2 {
-            print("\nWhat action \(activeCharacter.name) \(activeCharacter.activity) will do ?")
-            print("Enter 1 : to attack an enemy")
-            print("Enter 2 : to heal a team mate")
-            if let choice = readLine(){
-                choiceAction = Int(choice)!
             }else{
                 print("\n!!!!!!!!!!!    I don't understand    !!!!!!!!!!!")
             }
         }
-        return choiceAction
+        return character
     }
+    
+// CHOISIR L'ACTION A REALISER (ATTAQUE OU SOIN) ***
+    func chooseAction(of activeCharacter: Character) -> Int{
+        var valideReadLine: Bool = false
+        var validNumber: Int = 0
+        
+        while valideReadLine == false{
+            print("\nWhat action \(activeCharacter.name) \(activeCharacter.activity) will do ?")
+            print("Enter 1 : to attack an enemy")
+            print("Enter 2 : to heal a team mate")
             
+            if let choice = readLine(), let choiceAction = Int(choice){
+                if choiceAction == 1 || choiceAction == 2{
+                    valideReadLine = true
+                    validNumber = choiceAction
+                }else{
+                    print("\n!!!!!!!!!!!    I don't understand    !!!!!!!!!!!")
+                }
+            }
+        }
+        return validNumber
+    }
+
+// EXÉCUTER L'ACTION CHOISIE ***
     func executeAction(of activeCharacter: Character, from activePlayer: Player, to passivePlayer: Player){
         let choiceAction = chooseAction(of: activeCharacter)
         
@@ -286,16 +294,21 @@ class Game{
 //            showAliveCharacters(list: passivePlayer.team)
             let enemy = selectCharacter(passivePlayer)
             activeCharacter.attack(enemy: enemy)
+            activeCharacter.nbAttack += 1
         }else if choiceAction == 2{
             print("\n\(activeCharacter.name) is ready.")
             print("Who do you want to heal ?")
             showAliveCharacters(list: activePlayer.team)
             let member = selectCharacter(activePlayer)
             activeCharacter.heal(teamMate: member)
+            activeCharacter.nbHeal += 1
         }
+        //  calculer les stats de l'équipe
+        activePlayer.calculateTeamStats()
+        passivePlayer.calculateTeamStats()
     }
     
-    func askToKeepPlayerName(){
+    func askToKeepPlayerName() -> Bool{
         var responseToQuestion = false
         while responseToQuestion == false {
                 print("\nDo you want to play again with the same player names ? Yes or not ?")
@@ -312,6 +325,7 @@ class Game{
                     }
                 }
         }
+    return responseToQuestion
     }
 }
 

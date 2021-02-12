@@ -22,7 +22,7 @@ class AsianWarrior : Character {
         super.init()
         self.activity = activity
         self.weapon = weapon
-        health = 100
+        health = 80
         actualHealth = health
     }
 }

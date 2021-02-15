@@ -7,7 +7,10 @@
 
 import Foundation
 
-// CATEGORIES D'ARMESD : CLASSES AYANT HERITÉES DE LA CLASSE MÈRE WEAPON
+//  ****************************************************
+//          LES DIFFÉRENTES CATÉGORIES D'ARMES
+//         (sous classes de la classe Weapon)
+//  ****************************************************
 
 class FireWeapon : Weapon {
     init(name: String) {
@@ -57,9 +60,10 @@ class MedievalWeapon : Weapon {
     }
 }
 
-
-
-// ARMES : CLASSES AYANT HERITÉES DES CLASSES CATÉGORIES
+//  ****************************************************
+//               LES DIFFÉRENTES ARMES
+//       (sous sous classes de la classe Weapon)
+//  ****************************************************
 
 class Knife: StreetWeapon {
     init(){
@@ -168,6 +172,3 @@ class Rifle: FireWeapon {
         super.init(name: "a rifle")
     }
 }
-
-
-//        = [let knife = Knife(), let baseballBat = BaseballBat(), let bottle = Bottle(), let katana = Katana(), let shuriken = Shuriken() ,let nunchaku = Nunchaku(), let magicSword = MangicSword(), let flameThrower = Flowers(), let magicWand = MagicWand(), let Butter = ButterKnife(), let flowers = Flowers(), let tomatoes = Tomatoes(), let bow = Bow(), let sword = Sword(), let gun = Gun(), let revolver = Revolver(), let rifle = Rifle()]

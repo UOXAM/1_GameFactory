@@ -7,7 +7,11 @@
 
 import Foundation
 
-// LES DIFFERENTES CATÉGORIES DE PERSONNAGES, SOUS CLASSES DE CHARACTER
+//  ****************************************************
+//       LES DIFFÉRENTES CATÉGORIES DE PERSONNAGES
+//         (sous classes de la classe Character)
+//  ****************************************************
+
 class LawEnforcement : Character {
     init(activity: String, weapon: FireWeapon) {
         super.init()
@@ -15,7 +19,6 @@ class LawEnforcement : Character {
         self.weapon = weapon
     }
 }
-
 
 class AsianWarrior : Character {
     init(activity: String, weapon: NinjaWeapon) {
@@ -58,7 +61,12 @@ class Athlete : Character {
     }
 }
 
-// LES DIFFERENTES PERSONNAGES
+
+//  ****************************************************
+//             LES DIFFÉRENTS PERSONNAGES
+//         (sous sous classes de la classe Character)
+//  ****************************************************
+
 class Policeman: LawEnforcement {
     init() {
         super.init(activity: "the policeman", weapon: Gun())

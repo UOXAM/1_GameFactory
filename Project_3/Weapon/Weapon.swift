@@ -8,7 +8,10 @@
 import Foundation
 
 
-// CLASSE ARME
+//  ****************************************************
+//                    CLASSE WEAPON
+//  ****************************************************
+
 class Weapon{
     var damages: Int
     var name: String

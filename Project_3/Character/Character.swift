@@ -8,7 +8,7 @@
 import Foundation
     
 //  ****************************************************
-//                  CLASSE CHARACTER
+//                   CLASS CHARACTER
 //  ****************************************************
 
 class Character{
@@ -28,18 +28,8 @@ class Character{
             self.actualHealth = health
             self.heal = 25
         }
-
     
-// AFFICHER LES INFORMATIONS PRINCIPALES D'UN PERSONNAGE (FONCTION RÉUTILISÉE DANS LA CLASSE GAME)
-    func present(){
-        if name == ""{
-            print("\(activity) -> Life : \(actualHealth)/\(health) - Weapon : \(weapon.name)(\(weapon.damages)) - Heal :\(heal)")
-        }else{
-            print("\(name), \(activity) -> Life : \(actualHealth)/\(health) - Weapon : \(weapon.name)(\(weapon.damages)) - Heal :\(heal)")
-        }
-    }
-    
-// ATTAQUER UN ENNEMI (FONCTION RÉUTILISÉE DANS LA CLASSE GAME)
+// ATTACK AN ENEMY (FUNCTION USED IN THE CLASS GAME)
     func attack(enemy: Character){
         print("\n\(name) attacks with \(weapon.name) and causes \(weapon.damages) points of damage !")
         enemy.actualHealth -= self.weapon.damages
@@ -51,10 +41,9 @@ class Character{
         }else{
             print("\n\(enemy.name) stays alive with \(enemy.actualHealth) points of health.\n")
         }
-    nbAttack += 1
     }
 
-// SOIGNER UN MEMBRE DE MON EQUIPE (FONCTION RÉUTILISÉE DANS LA CLASSE GAME)
+// HEAL A MEMBER OF MY TEAM (FUNCTION USED IN THE CLASS GAME)
     func heal(teamMate: Character){
         if name == teamMate.name{
             print("\n\(name) give health to himself !")
@@ -68,6 +57,5 @@ class Character{
         }else{
             print("\(teamMate.name) fell better with \(teamMate.actualHealth) / \(teamMate.health) points of health.")
         }
-    nbHeal += 1
     }
 }

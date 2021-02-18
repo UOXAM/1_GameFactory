@@ -8,8 +8,8 @@
 import Foundation
 
 //  ****************************************************
-//          LES DIFFÉRENTES CATÉGORIES D'ARMES
-//         (sous classes de la classe Weapon)
+//               CATEGORIES OF WEAPONS
+//         (sub classes of the class Weapon)
 //  ****************************************************
 
 class FireWeapon : Weapon {
@@ -61,8 +61,8 @@ class MedievalWeapon : Weapon {
 }
 
 //  ****************************************************
-//               LES DIFFÉRENTES ARMES
-//       (sous sous classes de la classe Weapon)
+//                    ALL WEAPONS
+//       (sub sub classes of the class Weapon)
 //  ****************************************************
 
 class Knife: StreetWeapon {

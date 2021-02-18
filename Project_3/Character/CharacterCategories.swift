@@ -8,8 +8,8 @@
 import Foundation
 
 //  ****************************************************
-//       LES DIFFÉRENTES CATÉGORIES DE PERSONNAGES
-//         (sous classes de la classe Character)
+//              CATEGORIES OF CHARACTERS
+//         (sub classes of the class Character)
 //  ****************************************************
 
 class LawEnforcement : Character {
@@ -63,8 +63,8 @@ class Athlete : Character {
 
 
 //  ****************************************************
-//             LES DIFFÉRENTS PERSONNAGES
-//         (sous sous classes de la classe Character)
+//                    ALL CHARACTERS
+//         (sub sub clases of the class Character)
 //  ****************************************************
 
 class Policeman: LawEnforcement {

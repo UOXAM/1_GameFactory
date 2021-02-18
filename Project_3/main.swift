@@ -8,7 +8,7 @@
 import Foundation
 
 //  ****************************************************
-//          AVANT DE JOUEUR : VARIABLES
+//          BEFORE THE GAME : VARIABLES
 //  ****************************************************
 
 var nbGames: Int
@@ -18,25 +18,25 @@ var activePlayer = game.playerOne
 var passivePlayer = game.playerTwo
 
 //  ****************************************************
-//          ON PROPOSE EN BOUCLE DE JOUER AU JEU
+//          WE PROPOSE TO PLAY THE GAME (LOOP)
 //  ****************************************************
 
 while play == true{
     
     // ----------------------------------------------------------------------------
-    // INITIALISE LE JEU : DEMANDER DE JOUER, NOMMER LES JOUEURS, CRÉER LES ÉQUIPES
+    // INITIALIZE GAME : ASK TO PLAY DE JOUER, NAME CHARACTERS, CREATE TEAM
     // ----------------------------------------------------------------------------
     game.initialisation()
         
     // ----------------------------------------------------------------------------
-    // LANCE LE JEU : CHAQUE TOUR LES JOUEURS JOUENT À LA SUITE TANT QU'IL RESTE
-    //           AU MOINS UN PERSONNAGE VIVANT DANS CHAQUE TEAM
+    //              START THE GAME : EACH TURN BOTH PLAYERS PLAY
+    //            WHILE BOTH TEAMS HAVE AT LEAST ONE CHARACTER ALIVE
     // ----------------------------------------------------------------------------
     game.play()
         
     // ----------------------------------------------------------------------------
-    // FINALISATION : A LA FIN DE CHAQUE PARTIE ON AFFICHE LES STATS ET ON PROPOSE
-    //              DE REJOUER EN GARDANT LES MÊMES NOMS DE JOUEURS
+    // FINALIZATION : AT THE END OF THE GAME THE STATS ARE DISPLAYED AND
+    // WE ASK TO PLAY AGAIN WHILE KEEPING THE SAME PLAYER NAMES
     // ----------------------------------------------------------------------------
     game.finalisation()
 }

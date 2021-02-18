@@ -3,36 +3,29 @@
 //  Project_3
 //
 //  Created by ROUX Maxime on 30/01/2021.
-//s
+//
 
 import Foundation
 
 class Game{
     
-    let weaponsList: [Weapon] = [Knife(), BaseballBat(), Bottle(), Katana(), Shuriken() ,Nunchaku(), MangicSword(), Flowers(), MagicWand(), ButterKnife(), Flowers(), Tomatoes(), Bow(), Sword(), Gun(), Revolver(), Rifle()]
-    let charactersList: [Character] = [Policeman(), Military(), Doctor(), Nurse(), Ninja(), Samurai(), Knight(), Warrior(), Boxer(), Wrestler()]
-    var charactersListToChoose: [Character]
+    private let weaponsList: [Weapon] = [Knife(), BaseballBat(), Bottle(), Katana(), Shuriken() ,Nunchaku(), MangicSword(), Flowers(), MagicWand(), ButterKnife(), Flowers(), Tomatoes(), Bow(), Sword(), Gun(), Revolver(), Rifle()]
     var playerOne = Player(name: "Player 1")
     var playerTwo = Player(name: "Player 2")
-    var turn: Double = 0.0
-    var keepPlayerName = false
-    
-    
-    init() {
-        charactersListToChoose = charactersList
-    }
+    private var turn: Double = 0.0
+    private var keepPlayerName = false
 
     
 //  ********************************
-//       INITIALISATION DU JEU
+//       INITIALIZATION OF GAME
 //  ********************************
 
     // ----------------------------------------------------------------------------
-    // INITIALISE LE JEU : DEMANDER DE JOUER, NOMMER LES JOUEURS, CRÉER LES ÉQUIPES
+    // INITIALIZE GAME : ASK TO PLAY DE JOUER, NAME CHARACTERS, CREATE TEAM
     // ----------------------------------------------------------------------------
     func initialisation(){
         
-        // Si les mêmes joueurs rejouent ils gardent les mêmes noms de joueurs
+        // If the players want to play again and keep their name of player
         if keepPlayerName == false {
             nbGames = 0
             playerOne.nbVictory = 0
@@ -55,10 +48,10 @@ class Game{
     }
 
     // ----------------------------------------------------------------------------
-    // FONCTIONS PRIVÉES UTILISÉES DANS LA FONCTION INITIALISATION()
+    // PRIVATE FUNCTIONS USED IN THE FUNCTION INITIALIZATION()
     // ----------------------------------------------------------------------------
         
-    // PROPOSER DE JOUER UNE PARTIE
+    // PROPOSE TO PLAY
     private func askToPlay(){
         var playGame: Bool = false
         
@@ -76,7 +69,7 @@ class Game{
         }
     }
 
-    //  NOMMER UN JOUEUR
+    //  NAME PLAYER
     private func namePlayer(_ player: Player) {
         while player.name == "Player 1" || player.name == "Player 2" || playerOne.name == playerTwo.name {
             print("\(player.name): enter your name")
@@ -90,28 +83,28 @@ class Game{
         }
     }
 
-    // CREER SA TEAM DE 3 PERSONNAGES
+    // CREATE TEAM OF 3 CHARACTERS
     private func createTeam(_ player: Player){
         player.team = []
-        charactersListToChoose = charactersList
-            
-        // Proposer d'ajouter un personnage tant qu'on n'en a pas 3
-        while player.team.count < 1{
+        var charactersList: [Character] = [Policeman(), Military(), Doctor(), Nurse(), Ninja(), Samurai(), Knight(), Warrior(), Boxer(), Wrestler()]
+
+        // Propose to add a character until the team is composed by 3 members
+        while player.team.count < 3{
                 
-            // Afficher la liste des personnages disponibles
+            // Show list of available characters (a character can be add once per team, but each team can add the same character)
             starsNoSpace()
             print("\n\(player.name) create your team :\n")
             starsNoSpace()
-            showAliveCharacters(list: charactersListToChoose)
+            showAliveCharacters(list: charactersList)
             print("\nChoose the character \((player.team.count) + 1) / 3 by entering his number.")
                 
-            //  Entrer le numéro du personnage choisi
+            //  Enter the number of the character chosen
             if let choice = readLine(), let choiceMember = Int(choice){
                 switch choiceMember {
-                case 0..<charactersListToChoose.count :
-                    player.team.append(charactersListToChoose[choiceMember])
+                case 0..<charactersList.count :
+                    player.team.append(charactersList[choiceMember])
                     nameCharacter(character: player.team.last!, player: player)
-                    charactersListToChoose.remove(at: choiceMember)
+                    charactersList.remove(at: choiceMember)
                 default :
                     warningCharacter()
                 }
@@ -119,18 +112,18 @@ class Game{
                 warning()
             }
         }
-        //  Afficher l'équipe au complet
+        //  Show the Team members (characters)
         print("\n\(player.name), your TEAM :")
         line()
         showCharacters(list: player.team)
         line()
         print("")
             
-        //  calculer les stats de l'équipe
+        //  Calculate stats of the team
         player.calculateTeamStats()
     }
 
-    // DONNER UN NOM UNIQUE AU PERSONNAGE
+    // GIVE A UNIQUE NAME TO THE CHARACTER CHOSEN (EACH CHARACTER SHOULD HAVE DIFFERENT NAM OF OTHER CHARACTERS OF THE 2 TEAMS)
     private func nameCharacter(character: Character, player: Player){
         var nameOk = false
         while nameOk == false {
@@ -138,14 +131,14 @@ class Game{
             if let name = readLine(){
                 nameOk = true
                     
-                // On vérifie que le nom n'est pas déjà utilisé dans la première équipe
+                // Check if the name is already used in the first team
                 for member in playerOne.team {
                     if name == member.name {
                         nameOk = false
                     }
                 }
                 
-                // On vérifie que le nom n'est pas déjà utilisé dans la deuxième équipe
+                // Check if the name is already used in the second team
                 for member in playerTwo.team {
                     if name == member.name {
                         nameOk = false
@@ -162,40 +155,40 @@ class Game{
     }
 
 //  ********************************
-//       LANCEMENT LA PARTIE
+//       START THE GAME
 //  ********************************
 
     // ----------------------------------------------------------------------------
-    // LANCE LE JEU : CHAQUE TOUR LES JOUEURS JOUENT À LA SUITE TANT QU'IL RESTE
-    //           AU MOINS UN PERSONNAGE VIVANT DANS CHAQUE TEAM
+    //              START THE GAME : EACH TURN BOTH PLAYERS PLAY
+    //            WHILE BOTH TEAMS HAVE AT LEAST ONE CHARACTER ALIVE
     // ----------------------------------------------------------------------------
     func play() {
     
-        // On initialise le tour de jeu avant de commencer la partie
+        // We initialize the number of turns before to start to play
         turn = 0.5
             
-        //  Tour de jeu : jouer à tour de rôle tant qu'au moins un personnage de chaque équipe est vivant
+        //  Game Turn : players take turns while at least one character of both teams is alive
         while activePlayer.teamActualHealth > 0 && passivePlayer.teamActualHealth > 0 {
                 
-            // A chaque tour de jeu, le nombre de tour s'incrémente de 1
+            // Each turn the number of turn increase
             turn += 0.5
                 
-            // Annonce du tour de jeu
+            // Show which turn number is ongoing
             starsNoSpace()
             print("\nTURN \(Int(turn)) :")
             print("\(activePlayer.name), which member of your team will execute an action ?\n")
             starsNoSpace()
                 
-            //  Le Joueur choisit le personnage actif
+            //  Player choose a member of his team to play -> the active character
             let activeCharacter = selectCharacter(activePlayer)
                 
-            //  Le jeu propose aléatoirement le coffre d'armes au personnage, contenant une arme au hasard. Si le joueur décide de l'ouvrir, le personnage changera d'arme automatiquement.
+            //  The Game proposes by random a chest which contain a random weapon. If the player decide to open it, the active character will take this new weapon instead of his actual one (the random weapon can be the same or worse)
             proposeChest(to: activeCharacter)
                     
-            //  Le joueur choisit quelle action il fait exécuter à son personnage (soin pour un coéquipier ou attaque d'un ennemi)
+            //  The player choose which action his active charatcr will do (to heal team mate or himself || or || to attack enemy)
             executeAction(of: activeCharacter, from: activePlayer, to: passivePlayer)
                     
-            // Si l'adversaire a encore au moins un personnage vivant dans sa team, il devient l'activePlayer et c'est à son tour de jouer (nouvelle boucle du while)
+            // If the opponent player still has an alive character in his team, it's his turn to play -> he beacomes the active player
             if passivePlayer.teamActualHealth > 0{
                 activePlayer = passivePlayer
                 if activePlayer.name == playerOne.name {
@@ -209,40 +202,48 @@ class Game{
     }
     
     // ----------------------------------------------------------------------------
-    // FONCTIONS PRIVÉES UTILISÉES DANS LA FONCTION PLAY()
+    // PRIVATE FUNCTIONS USED IN THE FUNCTION PLAY()
     // ----------------------------------------------------------------------------
     
 
-    //  AFFICHER TOUS LES PERSONNAGES D'UNE LISTE
+    //  SHOW ALL CHARACTERS OF A LIST
     private func showCharacters(list: [Character]){
         for character in list{
-            print("\(character.name), \(character.activity)")
+            if character.name != "" {
+                print("\(character.name), \(character.activity) -> Life : \(character.actualHealth)/\(character.health) | Weapon : \(character.weapon.name)(\(character.weapon.damages)) | Heal : \(character.heal)")
+            }else{
+                print("\(character.activity) -> Life : \(character.actualHealth)/\(character.health) | Weapon : \(character.weapon.name)(\(character.weapon.damages)) | Heal : \(character.heal)")
+            }
         }
     }
         
-    //  AFFICHER TOUS LES PERSONNAGES VIVANTS D'UNE LISTE
+    //  SHOW ALL ALIVE CHARACTERS OF A LIST
     private func showAliveCharacters(list: [Character]){
         line()
         for (index, character) in list.enumerated() where character.actualHealth > 0{
-            print("\(index) : \(character.activity) -> Life : \(character.actualHealth)/\(character.health) | Weapon : \(character.weapon.name)(\(character.weapon.damages)) | Heal : \(character.heal)")
+            if character.name != "" {
+                print("\(index) : \(character.name), \(character.activity) -> Life : \(character.actualHealth)/\(character.health) | Weapon : \(character.weapon.name)(\(character.weapon.damages)) | Heal : \(character.heal)")
+            }else{
+                print("\(index) : \(character.activity) -> Life : \(character.actualHealth)/\(character.health) | Weapon : \(character.weapon.name)(\(character.weapon.damages)) | Heal : \(character.heal)")
+            }
         }
         line()
     }
     
-    // SELECTIONNER UN PERSONNAGE
+    // SELECT A CHARACTER (OF THE ACTIVE PLAYER TEAM) TO DO AN ACTION
     private func selectCharacter(_ player: Player) -> Character{
         var valideChoice = false
         let range = 0..<player.team.count
         var character :Character = player.team.first!
                 
-        //  Choisir le personnage qui va réaliser l'action
+        //  CHOOSE A CHARACTER
         while valideChoice == false{
                     
-            //  Afficher les personnages vivants de la team []
+            //  SHOW ALIVE CHARACTERS OF HIS TEAM
             showAliveCharacters(list: player.team)
             print("\nChoose a character in the list and enter his number.")
                 
-            //  Vérifier que c'est bien un entier qui a été entré
+            //  VERIFY THE PLAYER HAS CHOSEN A VALID CHARACTER BY ENTERING HIS NUMBER
             if let choice = readLine(), let choiceMember = Int(choice){
                 if range.contains(choiceMember) && player.team[choiceMember].actualHealth > 0{
                     character = player.team[choiceMember]
@@ -260,7 +261,7 @@ class Game{
         return character
     }
             
-    //  PROPOSER DE MANIÈRE ALÉATOIRE (1 chance sur 3) UN COFFRE CONTENANT UNE ARME AU HASARD. SI LE JOUEUR DÉCIDE DE L'OUVRIR, SON PERSONNAGE CHANGERA D'ARME.
+    //  PROPOSE RANDOMLY (1 IN 3 CHANCE) A CHEST CONTAINING A RANDOM WEAPON. IF THE PLAYER OPEN IT, HIS CHARACTER WILL TAKE THIS NEW WEAPON INSTEAD OF THE OLD ONE.
     private func proposeChest(to activeCharacter: Character){
         let x = Int.random(in: 0..<3)
         if x == 1{
@@ -268,7 +269,7 @@ class Game{
         }
     }
     
-        //  PROPOSER D'OUVRIR LE COFFRE (FONCTION UTILISÉE DANS PROPOSECHEST()
+        //  ASK TO OPEN THE CHEST (FUNCTION USED IN PROPOSECHEST())
         private func openChest(_ activeCharacter: Character){
             questionMarks()
             print("A chest appears with a random weapon inside. If you open it, your character will take this new weapon.")
@@ -285,14 +286,14 @@ class Game{
             }
         }
                 
-        //  PROPOSER UNE ARME AU HASARD (FONCTION UTILISÉE DANS OPENCHEST()
+        //  PICK RANDOMLY A WEAPON (FUNCTION USED IN OPENCHEST())
         private func randomWeapon() -> Weapon{
             let x = Int.random(in: 0..<weaponsList.count)
             let newWeapon = weaponsList[x]
             return newWeapon
         }
     
-        // CHANGER L'ARME DU PERSONNAGE (FONCTION UTILISÉE DANS OPENCHEST()
+        // THE ACTIVE CHARACTER TAKE THIS NEW WEAPON INSTEAD OF THE OLD ONE (FUNCTION USED IN OPENCHEST())
         private func changeWeapon(of activeCharacter: Character, by newWeapon: Weapon){
             if newWeapon.damages > activeCharacter.weapon.damages{
                 print("")
@@ -315,7 +316,7 @@ class Game{
             activeCharacter.weapon = newWeapon
         }
 
-    // CHOISIR L'ACTION A REALISER (ATTAQUE OU SOIN)
+    // CHOOSE WHICH ACTION THE ACTIVE CHARACTER WILL DO (TO ATTACK OR TO HEAL)
     private func chooseAction(of activeCharacter: Character) -> Int{
         var valideReadLine: Bool = false
         var validNumber: Int = 0
@@ -337,7 +338,7 @@ class Game{
         return validNumber
     }
 
-    // EXÉCUTER L'ACTION CHOISIE
+    // ACTIVE CHARACTER EXECUTES THE ACTION CHOSEN
     private func executeAction(of activeCharacter: Character, from activePlayer: Player, to passivePlayer: Player){
         let choiceAction = chooseAction(of: activeCharacter)
                 
@@ -355,41 +356,41 @@ class Game{
             activeCharacter.heal(teamMate: member)
             activeCharacter.nbHeal += 1
         }
-        //  calculer les stats de l'équipe
+        //  CALCULATE THE STATS OF THE TEAM
         activePlayer.calculateTeamStats()
         passivePlayer.calculateTeamStats()
     }
     
 
 //  ********************************
-//           FINALISATION
+//           FINALIZATION
 //  ********************************
 
     // ----------------------------------------------------------------------------
-    // FINALISATION : A LA FIN DE CHAQUE PARTIE ON AFFICHE LES STATS ET ON PROPOSE
-    //              DE REJOUER EN GARDANT LES MÊMES NOMS DE JOUEURS
+    // FINALIZATION : AT THE END OF THE GAME THE STATS ARE DISPLAYED AND
+    // WE ASK TO PLAY AGAIN WHILE KEEPING THE SAME PLAYER NAMES
     // ----------------------------------------------------------------------------
     
     func finalisation(){
-        // La partie terminée, on déterminer le gagnant et le perdant
+        // At the end of the game, we determinate the winner and the looser
         let winner = determineWinner()
         let looser = determineLooser()
         
-        // On ajoute une partie de gagnée au palmares du joueur vainqueur
+        // We add this victory to the player track record
         winner.nbVictory += 1
 
-        // Les stats de la partie sont affichés
+        // Stats of the game are displayed
         showStats(winner, looser)
-            
-        // Il est proposé aux joueurs de faire une nouvelle partie en gardant les mêmes noms de joueurs. Ensuite la boucle newGame est relancée et en fonction de la réponse, il sera poroposé de nommer les joueurs (dans ce cas le nombre de parties jouées repasse a 0) ou non (dans ce cas le nombre de parties jouées s'incrément de 1).
+        
+        // We propose to play again with the same player names. Then a new game is proposed. According to the response, players will have to enter new player names and the stats will be reset, or continue with same player names (and add 1 to the number of games played).
         keepPlayerName = askToKeepPlayerName()
     }
     
     // ----------------------------------------------------------------------------
-    // FONCTIONS PRIVÉES UTILISÉES DANS LA FONCTION FINALISATION()
+    // PRIVATE FUNCTIONS USED IN THE FUNCTION FINALIZATION()
     // ----------------------------------------------------------------------------
     
-    //  DETERMINER LE GAGNANT
+    //  DETERMINATE THE WINNER
     private func determineWinner() -> Player{
         var winner : Player
             
@@ -401,7 +402,7 @@ class Game{
         return winner
     }
         
-    // DETERMINER LE PERDANT
+    // DETERMINATE THE LOOSER
     private func determineLooser() -> Player{
         var looser : Player
         
@@ -413,7 +414,7 @@ class Game{
         return looser
     }
 
-    //  AFFICHER LES STATS DE LA PARTIE
+    //  DISPLAY STATS OF THE GAME
     private func showStats(_ winner: Player, _ looser: Player){
         stars()
         print("THE GAME LAST \(Int(turn)) TURNS !")
@@ -446,7 +447,7 @@ class Game{
         stars()
     }
     
-    // PROPOSER DE REJOUER EN GARDANT LES MÊMES NOMS DE JOUEURS
+    // ASK TO PLAY AGAIN WITH THE SAME PLAYER NAMES
     private func askToKeepPlayerName() -> Bool{
         let responseToQuestion = askYesNo(question: "Do you want to play again with the same player names ? Yes or no ?")
             
@@ -464,10 +465,10 @@ class Game{
     
     
 //  ******************************************************************************************
-//        FONCTIONS PRIVÉES GÉNÉRIQUES UTILISÉES DANS PLUSIEURS AUTRES FONCTIONS
+//        TOOL BOX : PRIVATE FUNCTIONS USED IN OTHER FUNCTION
 //  ******************************************************************************************
     
-    // POSER UNE QUESTION ACCEPTANT EN RÉPONSE OUI OU NON
+    // ASK A QUESTION ACCEPTING ONLY A RESPONSE YES OR NO
     private func askYesNo(question: String) -> Bool{
         var askAgain = true
         var responseToQuestion = false
@@ -490,43 +491,43 @@ class Game{
         return responseToQuestion
     }
     
-    // MESSAGE D'ERREUR : I DON'T UNDERSTAND
+    // ERROR MESSAGE : "I DON'T UNDERSTAND"
     private func warning(){
         print("\n!!!!!!!!!!!!!!!!!!!!!")
         print("I don't understand...")
         print("!!!!!!!!!!!!!!!!!!!!!\n")
     }
     
-    // MESSAGE D'ERREUR : I DON'T RECOGNIZE THIS CHARACTER
+    // ERROR MESSAGE : "I DON'T RECOGNIZE THIS CHARACTER"
     private func warningCharacter(){
         print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print("I don't recognize this character...")
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
     }
     
-    // MESSAGE D'ERREUR : NAME ALREADY TAKEN
+    // ERROR MESSAGE : "NAME ALREADY TAKEN"
     private func warningName(){
         print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print("This name is already taken...")
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
     }
     
-    // MISE EN FORME : SAUT DE LIGNE + LIGNE * + SAUT DE LIGNE
+    // FORMATTING : LINE BREAK + LINE OF STARS * + LINE BREAK
     private func stars(){
         print("\n*************************************************************************\n")
     }
     
-    // MISE EN FORME : SAUT DE LIGNE + LIGNE ? + SAUT DE LIGNE
+    // FORMATTING : LINE BREAK + LINE OF QUESTION MARKS ? + LINE BREAK
     private func questionMarks(){
         print("\n?????????????????????????????????????????????????????????????????????????\n")
     }
     
-    // MISE EN FORME : LIGNE -
+    // FORMATTING : LINE OF HYPHEN -
     private func line(){
         print("-------------------------------------------------------------------------")
     }
     
-    // MISE EN FORME : LIGNE *
+    // MISE EN FORME : LINE OF STARS *
     private func starsNoSpace(){
         print("*************************************************************************")
     }

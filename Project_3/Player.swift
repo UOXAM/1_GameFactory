@@ -20,7 +20,7 @@ class Player{
         self.name = name
     }
         
-// CALCULER LES STATISTIQUES DE L'EQUIPE (FONCTION RÉUTILISÉE DANS LA CLASSE GAME)
+// CALCULATE THE STATS OF THE TEAM (FUNCTION USED IN THE GAME CLASS)
     func calculateTeamStats(){
         teamNbAttack = 0
         teamNbHeal = 0
